@@ -1,4 +1,4 @@
-package com.example.desy.instagram_project;
+package com.example.desy.instagram_project_addition;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

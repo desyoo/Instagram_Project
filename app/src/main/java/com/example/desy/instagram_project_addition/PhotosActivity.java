@@ -1,7 +1,9 @@
-package com.example.desy.instagram_project;
+package com.example.desy.instagram_project_addition;
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -22,6 +24,7 @@ public class PhotosActivity extends ActionBarActivity {
     public static final String CLIENT_ID = "8b463d30f5c8465ba1b80ecf4e05edeb";
     private ArrayList<InstagramPhotos> photos;
     private InstagramPhotosAdapter aPhotos;
+    private SwipeRefreshLayout swipeContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +41,21 @@ public class PhotosActivity extends ActionBarActivity {
 
         //fetch the popular photos
         fetchPopularPhotos();
+
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+        //Setup refresh listener which triggers new data loading
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //fetch the popular photos
+                fetchPopularPhotos();
+            }
+        });
+
+        swipeContainer.setColorSchemeColors(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
 
     }
 
@@ -66,9 +84,10 @@ public class PhotosActivity extends ActionBarActivity {
                 //Log.i("DEBUG", response.toString());
                 //Iterate each of the photo items and decode the item into a java object
                 JSONArray photosJSON = null;
+                JSONArray commentJSON = null;
                 try{
                     photosJSON = response.getJSONArray("data"); //array of posts
-                    //iterate arry of photos
+                    //iterate array of photos
                     for (int i = 0; i < photosJSON.length(); i++) {
                         //get the json object at that position
                         JSONObject photoJSON = photosJSON.getJSONObject(i);
@@ -83,6 +102,19 @@ public class PhotosActivity extends ActionBarActivity {
                         photo.imageUrl = photoJSON.getJSONObject("images").getJSONObject("standard_resolution").getString("url");
                         photo.imageHeight = photoJSON.getJSONObject("images").getJSONObject("standard_resolution").getString("height");
                         photo.likesCount = photoJSON.getJSONObject("likes").getInt("count");
+
+                        photo.prof_picture = photoJSON.getJSONObject("user").getString("profile_picture");
+
+
+                        //-> comment: [{"data"=> [x] =>"text"}]
+                        commentJSON = photoJSON.getJSONObject("comments").getJSONArray("data");
+
+                        for (int j = 0 ; j < 2; j++) {
+                            JSONObject comment = commentJSON.getJSONObject(j);
+                            photo.comments = comment.getString("text");
+                            //Log.i("DEBUG", comment.toString());
+                        }
+
                         photos.add(photo);
                     }
 
@@ -91,6 +123,7 @@ public class PhotosActivity extends ActionBarActivity {
 
                 }
 
+                swipeContainer.setRefreshing(false);
                 //callback
                 aPhotos.notifyDataSetChanged();
             }
@@ -100,10 +133,13 @@ public class PhotosActivity extends ActionBarActivity {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 // DO SOMETHING
+                Log.d("DEBUG", "Fetch timeline error: " + throwable.toString());
             }
         });
 
+
     }
+
 
 
     @Override
