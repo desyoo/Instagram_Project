@@ -12,5 +12,5 @@ Popular Instagram Image Get
  * [ ] Advanced: Improve the user interface through styling and coloring
  * [ ] Bonus: Allow user to view all comments for an image within a separate screen or a dialog fragment
 
-![Video Walkthrough](file:///Users/desy/Desktop/Instagram_Project.gif)
+![Video Walkthrough](https://cloud.githubusercontent.com/assets/10593394/6261287/22538042-b7a2-11e4-9ec5-de03925cd3c3.gif)
 
