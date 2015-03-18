@@ -3,6 +3,8 @@ Popular Instagram Image Get
 
  * [x] Required: Able to fetch the popular photos
  * [x] Required: Able to use different APIs
+ * [x] Required: User can switch between Timeline and Mention views using tabs.
+ * [x] Required: User can navigate to view their own profile
 
  * [x] Advanced: Add pull-to-refresh for popular stream with SwipeRefreshLayout
  * [x] Advanced: Show latest comment for each photo (bonus: show last 2 comments)
@@ -14,3 +16,4 @@ Popular Instagram Image Get
 
 ![Video Walkthrough](https://cloud.githubusercontent.com/assets/10593394/6433701/c8038d3a-c02a-11e4-9921-d097a4333ed6.gif)
 
+![Video Walkthrough](https://cloud.githubusercontent.com/assets/10593394/6703138/e4fa2b58-ccf3-11e4-9533-f679b5efd418.gif)
